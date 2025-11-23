@@ -22,22 +22,7 @@ By using Label Spreading + Self-Training with Random Forest, the model is able t
 
 This project directly supports SDG 2: Zero Hunger, especially target 2.1 — End hunger and ensure access to safe, nutritious food for all.
 
-📂 Project Structure
-Ai folder/
-│
-├── semi_supervised_food_insecurity.py   # Main ML script
-│
-├── data/                                # Auto-generated dataset output
-│     └── regions_features.csv
-│
-├── models/                              # Saved model pipeline (.joblib)
-│     └── semi_supervised_pipeline.joblib
-│
-├── screenshots/                         # Screenshots of demo output
-│     └── screenshot1.png
-│     └── screenshot2.png
-│
-└── README.md
+
 ⚙️ Installation Requirements
 Install dependencies using:
 
