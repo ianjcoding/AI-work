@@ -168,32 +168,20 @@ This approach directly contributes to achieving SDG 2: Zero Hunger, and shows ho
 
 **1. Screenshot of the Folder Structure**
 
-Show:
+<img width="1920" height="1080" alt="Screenshot (324)" src="https://github.com/user-attachments/assets/5cd74caa-380d-4863-a135-90b01bfdb2f5" />
 
-data/
-models/
-semi_supervised_food_insecurity.py
-README.md
-
-
-Use your OS screenshot tool (Snipping Tool on Windows).
 
 **2. Screenshot of the “Dataset Generated” Output**
 
-Run your script and capture:
-
-Generated sample dataset at: data/regions_features.csv
+<img width="1280" height="71" alt="Screenshot 2025-11-23 195347" src="https://github.com/user-attachments/assets/fff4dcad-8349-4550-a016-0ea889b37fd6" />
 
 **3. Screenshot of the Model Training Logs**
 
-Capture:
-
-Evaluation on test set: {'accuracy': ..., 'f1': ..., 'precision': ..., ...}
+<img width="1581" height="113" alt="Screenshot 2025-11-23 123430" src="https://github.com/user-attachments/assets/f3cac64e-319f-4287-a401-a7d25ca4e3f5" />
 
 **4. Screenshot of the CSV File Preview**
 
-Open: data/regions_features.csv
-Capture first 10 rows.
+<img width="1919" height="557" alt="Screenshot 2025-11-23 194632" src="https://github.com/user-attachments/assets/c9316f39-35cf-4e18-97ef-c6c632fe0de0" />
 
 **5. Screenshot of the Models Folder**
 
