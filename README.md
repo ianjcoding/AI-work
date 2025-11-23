@@ -1,190 +1,134 @@
-Using Semi-Supervised Machine Learning to Predict Food Insecurity Risk (SDG 2: Zero Hunger)
-By [James K M]
-1. Introduction — The SDG Problem Being Solved
+README.md
+🥗 Semi-Supervised Food Insecurity Prediction
+Using Machine Learning to Support SDG 2: Zero Hunger
+📌 Project Overview
+Food insecurity remains one of Africa’s biggest challenges, especially in rural areas where real-time data is limited. Many regions lack labeled datasets that clearly classify households as “Food Secure” or “At Risk”.
 
-This project addresses Sustainable Development Goal 2 (SDG 2): Zero Hunger, specifically the challenge of identifying regions at risk of food insecurity.
+This project uses semi-supervised machine learning to solve that challenge.
 
-Governments and NGOs struggle because:
+The algorithm learns from:
 
-Field surveys are expensive
+✔ A small set of labeled data (regions where food insecurity status is known)
 
-Ground-truth labels (“At risk” vs “Not at risk”) are limited
+✔ A large set of unlabeled data (regions with no labels)
 
-However, satellite, climate, economic, and geographic data are abundant but unlabeled
+By using Label Spreading + Self-Training with Random Forest, the model is able to:
 
-This creates the perfect opportunity for semi-supervised machine learning — a method that can learn effectively from a small amount of labeled data and a large amount of unlabeled data.
+🟢 Predict food insecurity risk for unlabeled regions
 
-This project demonstrates exactly that.
+🟢 Improve performance using pseudo-labels
 
-**2. What the Project Does**
+🟢 Provide a scalable tool for governments & NGOs
 
-This project builds a semi-supervised machine learning pipeline that:
+This project directly supports SDG 2: Zero Hunger, especially target 2.1 — End hunger and ensure access to safe, nutritious food for all.
 
-Loads a per-region dataset
+📂 Project Structure
+Ai folder/
+│
+├── semi_supervised_food_insecurity.py   # Main ML script
+│
+├── data/                                # Auto-generated dataset output
+│     └── regions_features.csv
+│
+├── models/                              # Saved model pipeline (.joblib)
+│     └── semi_supervised_pipeline.joblib
+│
+├── screenshots/                         # Screenshots of demo output
+│     └── screenshot1.png
+│     └── screenshot2.png
+│
+└── README.md
+⚙️ Installation Requirements
+Install dependencies using:
 
-Uses Label Spreading to infer pseudo-labels for unlabeled regions
+pip install scikit-learn pandas numpy matplotlib joblib
+Required Libraries:
 
-Selects high-confidence pseudo-labels
+scikit-learn
 
-Trains a RandomForestClassifier using real + pseudo labels
+pandas
 
-Evaluates performance on a clean test set
+numpy
 
-Saves the complete pipeline using joblib
+matplotlib
 
-The system ultimately produces a model that can predict whether a region is “At Risk” or “Not at Risk” of food insecurity even with limited real labels.
+joblib
 
-This is extremely valuable in real-world hunger-monitoring systems, especially across rural African counties and districts.
+▶️ How to Run the Project
+Open a terminal inside the project folder:
 
-**3. Dataset Generation (As Implemented in the Code)**
+cd "Ai folder"
+Run the script:
 
-To allow the project to run anywhere without requiring real government datasets, the code automatically generates a fake dataset:
+python semi_supervised_food_insecurity.py
+You should see output similar to:
 
-num_regions = 200  
-num_features = 10  
-labels include: 0 = Not at Risk, 1 = At Risk, NaN = Unlabeled (40%)
+Generated sample dataset at: data/regions_features.csv
+Evaluation on test set: {'accuracy': ..., 'f1': ..., 'precision': ..., 'recall': ..., 'roc_auc': ...}
+📊 Model Workflow
+1. Generate a Synthetic Dataset
+Because real food insecurity datasets are limited, the script auto-creates a fake dataset:
 
+200 regions
 
-The script then saves this dataset to:
+10 random features
 
-data/regions_features.csv
+40% unlabeled (simulated missing labels)
 
+2. Preprocessing
+Missing values imputed
 
-This simulates what real data would look like while avoiding the need to expose sensitive government files.
+Features scaled
 
-**4. Semi-Supervised Learning Pipeline (Matches Code)**  
-Step 1 — Preprocessing
+Labels split into:
 
-Median imputation using SimpleImputer
+Labeled set (train/test)
 
-Standardization using StandardScaler
+Unlabeled set
 
-Matching lines in the code:
+3. Label Spreading
+Uses RBF kernel to generate pseudo-labels for unlabeled regions.
 
-imputer = SimpleImputer(strategy="median")
-scaler = StandardScaler()
+4. Self-Training Random Forest
+A Random Forest model is trained on:
 
-Step 2 — Separate Labeled vs Unlabeled
+Real labels
 
-Your code splits data like this:
+Confident pseudo labels (> 85% confidence)
 
-Labeled → rows where label is 0 or 1
+5. Evaluation
+Model is evaluated on unseen labeled regions.
 
-Unlabeled → rows where label = NaN
-
-Then it creates a small labeled set (approximately 10%) to simulate real-world scarcity, which equals:
-
-n_labeled_small = max(20, 10% of labeled data)
-
-
-This is excellent and realistic.
-
-Step 3 — Label Spreading (Semi-Supervised Learning)
-
-The heart of the project:
-
-label_spread = LabelSpreading(kernel='rbf', alpha=0.2, max_iter=1000)
-label_spread.fit(X_pool, y_pool)
-
-
-This model spreads labels from the few labeled regions across the feature space to infer new ones.
-
-Step 4 — High-Confidence Pseudo Labels
-
-The code selects only pseudo-labels where:
-
-max probability > 0.85
-
-
-This ensures the model doesn’t learn from noisy or uncertain guesses.
-
-Step 5 — Supervised Model Training
-
-Using both real and confident pseudo-labels:
-
-clf = RandomForestClassifier(n_estimators=200)
-clf.fit(X_self_train, y_self_train)
-
-
-This creates a strong supervised model on expanded data.
-
-Step 6 — Evaluation
-
-The model is evaluated on a pure labeled test set:
-
-metrics = {
-    accuracy, f1, precision, recall, roc_auc
-}
-
-
-This ensures your final performance score is honest and not inflated by unlabeled data.
-
-Step 7 — Saving the Pipeline
-
-The following dictionary is saved:
-
-{
-    "imputer": imputer,
-    "scaler": scaler,
-    "label_spread": label_spread,
-    "classifier": clf
-}
-
-
-Stored in:
+6. Save Model Pipeline
+Saved to:
 
 models/semi_supervised_pipeline.joblib
+🖼️ Screenshots
+Sample Output Screenshot
+Add your screenshot to:
 
+screenshots/
+Then reference it like this:
 
-This makes your model usable for deployment or future predictions.
+<img width="1920" height="1080" alt="Screenshot (326)" src="https://github.com/user-attachments/assets/6d00f5ae-5fa6-4ac6-85ce-923e2b51228d" />
 
-5. How This Solves the SDG 2 Problem
-✔ Predicts food insecurity early
+Example:
 
-Regions that show rising risk can be targeted with interventions before extreme hunger occurs.
+🎯 How This Project Supports SDG 2 (Zero Hunger)
+This model helps governments, NGOs, and researchers:
 
-✔ Works even with limited survey data
+✔ Identify at-risk regions early
+✔ Predict food insecurity without full datasets
+✔ Reduce the cost of large surveys
+✔ Focus resources on areas that need it most
+By combining semi-supervised learning and synthetic data generation, this project demonstrates a scalable approach to improving food security analytics across developing regions.
 
-Agricultural ministries rarely have enough labeled samples — your approach solves this bottleneck.
+📌 How to Add Screenshots to README
+Put your screenshots inside the screenshots/ folder
 
-✔ Reduces cost of monitoring
+Use this Markdown line:
 
-Satellite + environmental data is cheap; your ML system turns it into actionable insights.
+![description](screenshots/your_image.png)
+Example:
 
-✔ Enables data-driven decision-making
-
-Counties, NGOs, and global partners can allocate food aid more efficiently.
-
-✔ Fully automatable
-
-Once deployed, predictions can run weekly or monthly with new data.
-
-6. Conclusion
-
-This project demonstrates how semi-supervised machine learning can strengthen hunger early-warning systems, especially in regions where labeled food security assessments are limited. By combining Label Spreading and Random Forests, the model becomes more accurate while relying on minimal labeled data.
-
-This approach directly contributes to achieving SDG 2: Zero Hunger, and shows how artificial intelligence can be used responsibly to support vulnerable communities.
-
-
-**1. Screenshot of the Folder Structure**
-
-<img width="1920" height="1080" alt="Screenshot (324)" src="https://github.com/user-attachments/assets/5cd74caa-380d-4863-a135-90b01bfdb2f5" />
-
-
-**2. Screenshot of the “Dataset Generated” Output**
-
-<img width="1280" height="71" alt="Screenshot 2025-11-23 195347" src="https://github.com/user-attachments/assets/fff4dcad-8349-4550-a016-0ea889b37fd6" />
-
-**3. Screenshot of the Model Training Logs**
-
-<img width="1581" height="113" alt="Screenshot 2025-11-23 123430" src="https://github.com/user-attachments/assets/f3cac64e-319f-4287-a401-a7d25ca4e3f5" />
-
-**4. Screenshot of the CSV File Preview**
-
-<img width="1919" height="557" alt="Screenshot 2025-11-23 194632" src="https://github.com/user-attachments/assets/c9316f39-35cf-4e18-97ef-c6c632fe0de0" />
-
-**5. Screenshot of the Models Folder**
-
-Showing:
-
-semi_supervised_pipeline.joblib
+![Program Output](screenshots/output1.png)
