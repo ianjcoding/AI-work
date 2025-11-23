@@ -124,11 +124,7 @@ This model helps governments, NGOs, and researchers:
 By combining semi-supervised learning and synthetic data generation, this project demonstrates a scalable approach to improving food security analytics across developing regions.
 
 📌 How to Add Screenshots to README
-Put your screenshots inside the screenshots/ folder
+<img width="1581" height="113" alt="Screenshot 2025-11-23 123430" src="https://github.com/user-attachments/assets/08b20ea2-9f3e-4b46-a0e4-7d13a97f7b2a" />
+<img width="1919" height="557" alt="Screenshot 2025-11-23 194632" src="https://github.com/user-attachments/assets/e8c7fffe-d9e6-4449-993a-66fa24ea26e5" />
+<img width="1280" height="71" alt="Screenshot 2025-11-23 195347" src="https://github.com/user-attachments/assets/7cc03f76-792f-460b-8d57-7999607e547f" />
 
-Use this Markdown line:
-
-![description](screenshots/your_image.png)
-Example:
-
-![Program Output](screenshots/output1.png)
